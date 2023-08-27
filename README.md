@@ -9,12 +9,30 @@ Python scripts to map keyboard events and/or mouse buttons to MIDI messages in L
 - Python packages `mido`, `rtmidi` and `python-rtmidi` (e.g., via pip or AUR packages `python-mido` and `python-rtmidi`, requires `libasound2-dev` and `libjack-dev`)
 
 ## Capturing mouse buttons and sending MIDI events
-This method captures mouse events with `evdev` and sends MIDI events. It is best to be used on headless systems such as a Raspberry Pi. If using it on a machine with X session, the mouse will move and potentially disturb other programs.
+This method captures mouse events with `evdev` and sends MIDI events. Thanks to python-evdev's `grab` method, the mouse will be disabled while the script is running in order not to disturb other programs.
 1. Run `sudo evtest` and select your desired device
 1. Remember the input device name
-1. Adapt `MOUSE_NAME` according to your setup and run `evdevmidi.py`
+1. Adapt `MOUSE_NAME` according to your setup and run `python evdevmidi.py`
 
-## Remapping mouse buttons to keyboard keys and sending MIDI events
+## Using MIDI messages in QLC+
+1. (Re-) Start QLC+ after running `evdevmidi.py`
+1. Activate "RtMidi output" as Input in the Inputs/Outputs tab
+![QLC+ MIDI input](docs/qlcp-midi-input.png)
+1. Select Profile "None"
+1. Register External Input in the properties of a button in your Virtual Console
+1. Enjoy strobe, fog and more with your mouse on the dancefloor!
+
+## Autostart
+Create `~/.config/autostart/evdevmidi.desktop` with the following content with the path adjusted to your setup to start the script upon bootup:
+```
+[Desktop Entry]
+Type=Application
+Name=evdevmidi
+Exec=python <path-to-midi-mouse>/evdevmidi.py
+StartupNotify=false
+```
+
+## Legacy: Remapping mouse buttons to keyboard keys and sending MIDI events
 This method is particularily usefull if you would like to use a mouse on a system that is used for other purposes such as djing at the same time such that the mouse should not move and click on things randomly.
 
 ### Remapping of mouse buttons to keyboard keys
@@ -57,14 +75,6 @@ Remap your mouse buttons to keyboard key events according to [this](https://asku
 
 ### Capturing keyboard events and sending MIDI messages
 Adapt `MOUSE_NAME` and `MAPPING` variables according to your setup and run `midiremap.py`
-
-## Using MIDI messages in QLC+
-1. (Re-) Start QLC+ after running `midiremap.py`
-1. Activate "RtMidi output" as Input in the Inputs/Outputs tab
-![QLC+ MIDI input](docs/qlcp-midi-input.png)
-1. Select Profile "None"
-1. Register External Input in the properties of a button in your Virtual Console
-1. Enjoy strobe, fog and more with your mouse on the dancefloor!
 
 ## Credits/Ressources
 - https://askubuntu.com/a/1145638/795463
