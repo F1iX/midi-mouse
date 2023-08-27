@@ -1,5 +1,6 @@
 import evdev
 import mido
+import time
 
 DEVICE_NAME = "Logitech Wireless Mouse"
 device_path = None
@@ -16,6 +17,8 @@ while True:
         outport = mido.open_output()
         scroll_value = 127
         slider_channel = 0
+
+        print("Grabbing {} and sending MIDI commands...".format(DEVICE_NAME))
 
         for event in device.read_loop():
             if event.code == 272:  # Left mouse button
@@ -54,4 +57,5 @@ while True:
                     outport.send(msg)
     except Exception as e:
         print(e)
-        print("Retrying...")
+        print("Retrying (consider using sudo or cancel with CTRL+C)...")
+    time.sleep(1)
