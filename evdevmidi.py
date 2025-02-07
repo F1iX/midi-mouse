@@ -82,7 +82,7 @@ while True:
 
         print("Grabbing {} and sending MIDI/ArtNet commands...".format(DEVICE_NAME))
 
-        dmxData = [0,0,0,0]  # Mouse: [left button, right button, middle button, scrolwheel]
+        dmxData = [0,0,0,scroll_value,max_scroll_value]  # Mouse: [left button, right button, middle button, scrollwheel, max scroll value]
 
         loop = 0
         config_mode_changed_at_loop = 0
@@ -129,15 +129,14 @@ while True:
             if event.code == 11:
                 if event.value == 120:  # Scroll up
                     scroll_value += 5
-                    if config_mode:
-                        max_scroll_value = scroll_value
                     if scroll_value > 127:
                         scroll_value = 127
-                    elif scroll_value > max_scroll_value:
-                        scroll_value = max_scroll_value
+                    if config_mode:
+                        max_scroll_value = scroll_value
                     msg = mido.Message('control_change', value=scroll_value, channel=slider_channel)
                     outport.send(msg)
                     dmxData[3] = int(scroll_value / 127 * 255)
+                    dmxData[4] = int(max_scroll_value / 127 * 255)
                     if artNetSocket:
                         sendArtNetPacket( ARTNET_UNIVERSE, dmxData, artNetSocket )
                 if event.value == -120:  # Scroll down
@@ -149,6 +148,7 @@ while True:
                     msg = mido.Message('control_change', value=scroll_value, channel=slider_channel)
                     outport.send(msg)
                     dmxData[3] = int(scroll_value / 127 * 255)
+                    dmxData[4] = int(max_scroll_value / 127 * 255)
                     if artNetSocket:
                         sendArtNetPacket( ARTNET_UNIVERSE, dmxData, artNetSocket )
             if dmxData[0] == 255 and dmxData[1] == 255 and dmxData[2] == 255:  # toggle config mode (adjust max scroll value)
