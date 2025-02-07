@@ -1,4 +1,4 @@
-# Map mouse/keyboard to MIDI
+# Map mouse/keyboard to MIDI and/or Art-Net
 
 Python scripts to map keyboard events and/or mouse buttons to MIDI messages in Linux, e.g., for use in QLC+.
 
@@ -8,11 +8,15 @@ Python scripts to map keyboard events and/or mouse buttons to MIDI messages in L
 - Python
 - Python packages `mido`, `rtmidi` and `python-rtmidi` (e.g., via pip or AUR packages `python-mido` and `python-rtmidi`, requires `libasound2-dev` and `libjack-dev`)
 
+To create a suitable virtual Python environment,
+1. Run `python -m venv .venv`
+1. Run `.venv/bin/pip install -r requirements.txt`
+
 ## Capturing mouse buttons and sending MIDI events
 This method captures mouse events with `evdev` and sends MIDI events. Thanks to python-evdev's `grab` method, the mouse will be disabled while the script is running in order not to disturb other programs.
 1. Run `sudo evtest` and select your desired device
 1. Remember the input device name
-1. Adapt `MOUSE_NAME` according to your setup and run `python evdevmidi.py`
+1. Adapt the file `DEVICE_NAME` according to your setup and run `.venv/bin/python evdevmidi.py` or `python evdevmidi.py`
 
 ## Using MIDI messages in QLC+
 1. (Re-) Start QLC+ after running `evdevmidi.py`
