@@ -60,11 +60,16 @@ while True:
             print( f"Sending Art-Net packets to {ARTNET_OUT_IP}:{artNetUdpPort}" )
 
         scroll_value = 127
+        max_scroll_value = 127
+        config_mode = False
         slider_channel = 0
 
         print("Grabbing {} and sending MIDI/ArtNet commands...".format(DEVICE_NAME))
 
         dmxData = [0,0,0,0]  # Mouse: [left button, right button, middle button, scrolwheel]
+
+        loop = 0
+        config_mode_changed_at_loop = 0
         for event in device.read_loop():
             if event.code == 272:  # Left mouse button
                 if event.value == 1:
@@ -108,22 +113,39 @@ while True:
             if event.code == 11:
                 if event.value == 120:  # Scroll up
                     scroll_value += 5
+                    if config_mode:
+                        max_scroll_value = scroll_value
                     if scroll_value > 127:
                         scroll_value = 127
+                    elif scroll_value > max_scroll_value:
+                        scroll_value = max_scroll_value
                     msg = mido.Message('control_change', value=scroll_value, channel=slider_channel)
                     outport.send(msg)
-                    dmxData[3] = scroll_value
+                    dmxData[3] = int(scroll_value / 127 * 255)
                     if artNetSocket:
                         sendArtNetPacket( ARTNET_UNIVERSE, dmxData, artNetSocket )
                 if event.value == -120:  # Scroll down
                     scroll_value -= 5
                     if scroll_value < 0:
                         scroll_value = 0
+                    if config_mode:
+                        max_scroll_value = scroll_value
                     msg = mido.Message('control_change', value=scroll_value, channel=slider_channel)
                     outport.send(msg)
-                    dmxData[3] = scroll_value
+                    dmxData[3] = int(scroll_value / 127 * 255)
                     if artNetSocket:
                         sendArtNetPacket( ARTNET_UNIVERSE, dmxData, artNetSocket )
+            if dmxData[0] == 255 and dmxData[1] == 255 and dmxData[2] == 255:  # toggle config mode (adjust max scroll value)
+                print("{} {}".format(loop,config_mode_changed_at_loop))
+                if loop > config_mode_changed_at_loop + 2:  # at least one frame in between
+                    if config_mode:
+                            config_mode = False
+                            print("Leaving config mode (all buttons pressed), max. scrolling value set to {}".format(max_scroll_value))
+                    else:
+                        config_mode = True
+                        print("Entering config mode (all buttons pressed), please select max. scrolling value")
+                    config_mode_changed_at_loop = loop
+            loop += 1
     except Exception as e:
         print(e)
         print("Retrying (consider using sudo or cancel with CTRL+C)...")
