@@ -19,7 +19,9 @@ This method captures mouse events with `evdev` and sends MIDI events. Thanks to 
 1. Adapt the file `DEVICE_NAME` according to your setup and run `.venv/bin/python evdevmidi.py` or `python evdevmidi.py`
 
 ### Config mode
-Press left, middle and right mouse button at the same time to enter config mode. You can then select the maximum scrolling value by scrolling. Confirm, save and leave config mode by pressing left, middle and right mouse button instantaneously again.
+1. Press `left` + `middle` + `right` mouse button at the same time to enter config mode
+1. You can now select the maximum scrolling value by scrolling
+1. Confirm, save and leave config mode by pressing `left` + `middle` + `right` mouse button instantaneously again
 
 ## Using MIDI messages in QLC+
 1. (Re-) Start QLC+ after running `evdevmidi.py`
