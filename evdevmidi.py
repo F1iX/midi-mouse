@@ -10,6 +10,8 @@ if ( len(sys.argv) == 3 ):
     ARTNET_OUT_IP = sys.argv[1]
     try:
         ARTNET_UNIVERSE = int(sys.argv[2])
+        if ARTNET_UNIVERSE > 127:
+            print("Warning, Art-Net universes greater than 127 may not work with QLC+!")
     except Exception as e:
         print( "Error parsing parameter" )
         print(e)
@@ -24,7 +26,6 @@ DEVICE_NAME = None
 with open( "DEVICE_NAME") as file:
     for line in file:
         text = line.rstrip()
-        print(text)
         if text[0] != "#":
             DEVICE_NAME = text
 
@@ -44,9 +45,9 @@ def sendArtNetPacket( universeId, dmxData, artNetSocket ):
 while True:
     try:
         devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
-        print("List of available devices, waiting for {}:".format(DEVICE_NAME))
+        print("List of available devices, waiting for {} as defined in file DEVICE_NAME:".format(DEVICE_NAME))
         for device in devices:
-            print(device.name)
+            print("\t{}".format(device.name))
             if device.name == DEVICE_NAME:
                 device_path = device.path
 

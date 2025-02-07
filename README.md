@@ -32,6 +32,12 @@ This method captures mouse events with `evdev` and sends MIDI events. Thanks to 
 1. Enjoy strobe, fog and more with your mouse on the dancefloor!
 
 ## Autostart
+### With cron
+1. Run `sudo crontab -e`
+1. Add `@reboot sleep 5 && sh /home/pi/midi-mouse/midimouse.sh`
+1. Append `>/home/pi/logs/cronlog 2>&1` for logging if needed (caution, may cause big log file!)
+
+### With autostart file
 Create `~/.config/autostart/evdevmidi.desktop` with the following content with the path adjusted to your setup to start the script upon bootup:
 ```
 [Desktop Entry]
