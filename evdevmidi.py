@@ -2,6 +2,23 @@ import evdev
 import mido
 import time
 import socket
+import sys
+
+ARTNET_OUT_IP = "10.42.0.255"
+ARTNET_UNIVERSE = 0
+if ( len(sys.argv) == 3 ):
+    ARTNET_OUT_IP = sys.argv[1]
+    try:
+        ARTNET_UNIVERSE = int(sys.argv[2])
+    except Exception as e:
+        print( "Error parsing parameter" )
+        print(e)
+        print( f"Usage: python3 {sys.argv[0]} IPADDRESS DESTINATION_ARTNET_UNIVERSE" )
+        exit(1)
+else:
+    print( "Error parsing parameter")
+    print( f"Usage: python3 {sys.argv[0]} IPADDRESS DESTINATION_ARTNET_UNIVERSE" )
+    exit(1)
 
 DEVICE_NAME = None
 with open( "DEVICE_NAME") as file:
@@ -11,8 +28,6 @@ with open( "DEVICE_NAME") as file:
         if text[0] != "#":
             DEVICE_NAME = text
 
-ARTNET_OUT_IP = "10.42.0.190"
-ARTNET_UNIVERSE = 0
 device_path = None
 
 def sendArtNetPacket( universeId, dmxData, artNetSocket ):
@@ -29,7 +44,7 @@ def sendArtNetPacket( universeId, dmxData, artNetSocket ):
 while True:
     try:
         devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
-        print("List of available devices, waiting for \"{}\":".format(DEVICE_NAME))
+        print("List of available devices, waiting for {}:".format(DEVICE_NAME))
         for device in devices:
             print(device.name)
             if device.name == DEVICE_NAME:
@@ -57,7 +72,7 @@ while True:
                     continue
                 else:
                     break
-            print( f"Sending Art-Net packets to {ARTNET_OUT_IP}:{artNetUdpPort}" )
+            print( f"Sending Art-Net packets to Universe {ARTNET_UNIVERSE} at {ARTNET_OUT_IP}:{artNetUdpPort}" )
 
         scroll_value = 127
         max_scroll_value = 127
