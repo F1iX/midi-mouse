@@ -23,6 +23,16 @@ This method captures mouse events with `evdev` and sends MIDI events. Thanks to 
 1. You can now select the maximum scrolling value by scrolling
 1. Confirm, save and leave config mode by pressing `left` + `middle` + `right` mouse button instantaneously again
 
+## Using Art-Net messages in MadMapper/QLC+
+The script will broadcast Art-Net messages on the following DMX-channels in the selected Art-Net Universe:
+|Channel|Input          |Value                  |
+|---    |---            |---                    |
+|1      |Left button    |0 (off), 255 (pressed) |
+|2      |Right button   |0 (off), 255 (pressed) |
+|3      |Middle button  |0 (off), 255 (pressed) |
+|4      |Left button    |0 - 255 or maximum scrolling value |
+
+
 ## Using MIDI messages in QLC+
 1. (Re-) Start QLC+ after running `evdevmidi.py`
 1. Activate "RtMidi output" as Input in the Inputs/Outputs tab
