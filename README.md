@@ -28,11 +28,13 @@ The script will broadcast Art-Net messages on the following DMX-channels in the 
 |Channel|Trigger                        |Value                                          |
 |---    |---                            |---                                            |
 |1      |Left button                    |0 (off), 255 (pressed)                         |
-|2      |Right button                   |0 (off), 255 (pressed)                         |
-|3      |Middle button                  |0 (off), 255 (pressed)                         |
+|2      |Middle button                  |0 (off), 255 (pressed)                         |
+|3      |Right button                   |0 (off), 255 (pressed)                         |
 |4      |Scrollwheel change             |Current scrollwheel value 0-255                |
 |5      |(None/persistent after init)   |Scrollwheel config value                       |
-|6      |Fixed scrollwheel config value |0 (off), scrollwheel config value (pressed)    |
+|6      |Left button                    |0 (off), scrollwheel config value (pressed)    |
+|7      |Middle button                  |0 (off), scrollwheel config value (pressed)    |
+|8      |Right button                   |0 (off), scrollwheel config value (pressed)    |
 
 ## Using MIDI messages in QLC+
 1. (Re-) Start QLC+ after running `midimouse.py`
