@@ -24,7 +24,7 @@ This method captures mouse events with `evdev` and sends MIDI events. Thanks to 
 1. Confirm, save and leave config mode by pressing `left` + `middle` + `right` mouse button instantaneously again
 
 ## Using Art-Net messages in MadMapper/QLC+
-The script will broadcast Art-Net messages on the following DMX-channels in the selected Art-Net Universe:
+The script will broadcast Art-Net messages on the following DMX-channels (configurable via command-line arguments) in the selected Art-Net Universe:
 |Channel|Trigger                        |Value                                          |
 |---    |---                            |---                                            |
 |1      |Left button                    |0 (off), 255 (pressed)                         |
