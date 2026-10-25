@@ -1,5 +1,7 @@
 # Map mouse/keyboard to MIDI and/or Art-Net
 
+![midi-mouse](docs/midi-mouse.gif)
+
 Python script to map keyboard events and/or mouse buttons to MIDI messages in Linux, e.g., for use in QLC+.
 
 ## Prerequisites
